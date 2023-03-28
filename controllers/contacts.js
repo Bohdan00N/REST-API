@@ -6,7 +6,7 @@ const { HttpError } = require("../helpers");
 
 const listContacts = async (req, res) => {
   const result = await contacts.listContacts();
-  return JSON.parse(result);
+  res.json(result);
 };
 
 const getContactById = async (req, res) => {
@@ -35,7 +35,7 @@ const removeContact = async (req, res) => {
   const { id } = req.params;
   const result = await contacts.removeContact(id);
   if (!result) {
-    throw HttpError(404, `Contact with id  not found`);
+    throw HttpError(404, `Contact with id ${id} not found`);
   }
   res.json({
     message: "Contact removed",

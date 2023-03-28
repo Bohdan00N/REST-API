@@ -16,6 +16,4 @@ const addSchema = Joi.object({
     "string.empty": `"number" cannot be empty`,
   }),
 });
-module.exports = {
-  addSchema,
-};
+module.exports = addSchema;
