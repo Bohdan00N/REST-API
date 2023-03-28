@@ -1,26 +1,13 @@
 const express = require("express");
+
 const contacts = require("../../models/contacts");
-const Joi = require("joi");
+
+const schemas = require("../../schemas/contacts");
+
 const router = express.Router();
+
 const { HttpError } = require("../../helpers");
 
-const addSchema = Joi.object({
-  name: Joi.string().required().messages({
-    "any.required": `"name" must be exist`,
-    "string.base": `"name" must be string`,
-    "string.empty": `"name" cannot be empty`,
-  }),
-  email: Joi.string().required().messages({
-    "any.required": `"email" must be exist`,
-    "string.base": `"email" must be string`,
-    "string.empty": `"email" cannot be empty`,
-  }),
-  phone: Joi.string().required().messages({
-    "any.required": `"number" must be exist`,
-    "string.base": `"number" must be string`,
-    "string.empty": `"number" cannot be empty`,
-  }),
-});
 
 router.get("/", async (req, res, next) => {
   try {
