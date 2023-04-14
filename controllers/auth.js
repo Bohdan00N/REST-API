@@ -13,6 +13,8 @@ const { User } = require("../models/user");
 
 const { HttpError } = require("../helpers");
 
+const Jimp = require("jimp");
+
 const { SECRET_KEY } = process.env;
 
 const avatarDir = path.join(__dirname, "../", "public", "avatars");
@@ -87,9 +89,17 @@ const updateAvatar = async (req, res) => {
   const resultUpload = path.join(avatarDir, savename);
   await fs.rename(tempUpload, resultUpload);
   const avatarURL = path.join("avatars", savename);
-  await User.findByIdAndUpdate(_id, { avatarURL });
+  const minImg = path.join("public/avatars", savename);
+
+  Jimp.read(minImg, (err, img) => {
+    if (err) throw err;
+    img.resize(250, 250).quality(60).write(minImg);
+  });
+
+  await User.findByIdAndUpdate(_id, { avatarURL: minImg });
   res.json({ avatarURL });
 };
+
 const logout = async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { token: "" });
